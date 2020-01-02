@@ -6,7 +6,7 @@ import json
 
 url = 'https://api.hh.ru/vacancies'
 
-request_text = 'NAME:'+input('Введите запрос для поиска вакансий:')
+request_text = input('Введите запрос для поиска вакансий:')
 key_skills = {}
 vacancies_total = 0     #число найденных вакансий
 salary_total = 0        #суммарная зарплата вакансий - для расчета средней
@@ -15,7 +15,7 @@ NUM_PAGES = 2           #ограничение числа страниц пои
 for page_number in range(NUM_PAGES):
 
     parameters = {
-         'text': request_text,
+         'text': 'NAME:'+request_text,
          'per_page': 10,
          'page': page_number,
          'only_with_salary': True,
@@ -55,21 +55,22 @@ for page_number in range(NUM_PAGES):
 
 key_skills_sorted = sorted(key_skills.items(), key=lambda x: x[1], reverse=True)
 
-request_result = {}
+request_result = {}      #записвываем результаты в словарь
 
+request_result['request_text'] = request_text
 request_result['vacancies_total'] = vacancies_total
 request_result['average_salary'] = round(salary_total/vacancies_total,-3)
 request_result['key_skills'] = key_skills_sorted
 
+print('ПАРАМЕТРЫ ЗАПРОСА:', request_text)
 print('ВСЕГО ВАКАНСИЙ:', vacancies_total)
 print('СРЕДНЯЯ ЗАРПЛАТА:', request_result['average_salary'])
 print('СПИСОК КЛЮЧЕВЫХ НАВЫКОВ:')
 for item in key_skills_sorted:
     print(f'{item[0]} {item[1]}  {round(item[1]/vacancies_total*100)} %' )
 
-#request_result_json = json.dumps(request_result)
-#print(request_result_json)
 
+#сохраняем словарь результатов в файл .json
 with open('request_result.json', "w", encoding="utf-8") as file:
     json.dump(request_result, file)
 
