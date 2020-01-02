@@ -25,22 +25,23 @@ for page_number in range(NUM_PAGES):
     result = requests.get(url, params=parameters).json()
 #    print('Страница:', page_number)
 #    pprint.pprint(result)
-    vacancies = result['items']
+    vacancies = result['items']     #получили список вакансий
 
     for vacancy in vacancies:
         url_vacancy = vacancy['url']
-        result = requests.get(url_vacancy).json()
+        result = requests.get(url_vacancy).json()   #запрашиваем данные по каждой вакансии
         salary = result['salary']
 
-        if salary['currency'] == 'RUR':
-            print(result['key_skills'])
-            print(result['salary'])
+        if salary['currency'] == 'RUR':             #учитываем только вакансии с зарплатой в рублях
+#            print(result['key_skills'])
+#            print(result['salary'])
             vacancies_total  += 1
+            # вычисляем зарплату как среднее между верхним и нижним значением
             salary_start = 0 if salary['from'] is None else salary['from']
             salary_finish = salary_start if salary['to'] is None else salary['to']
             salary_total  += (salary_start+salary_finish)/2
 
-            skills = result['key_skills']
+            skills = result['key_skills']   #разбираем ключевые навыки
             for skill in skills:
                 item = skill['name']
                 if item in key_skills:
@@ -66,7 +67,10 @@ print('СПИСОК КЛЮЧЕВЫХ НАВЫКОВ:')
 for item in key_skills_sorted:
     print(f'{item[0]} {item[1]}  {round(item[1]/vacancies_total*100)} %' )
 
-request_result_json = json.dumps(request_result)
-print(request_result_json)
+#request_result_json = json.dumps(request_result)
+#print(request_result_json)
 
+with open('request_result.json', "w", encoding="utf-8") as file:
+    json.dump(request_result, file)
 
+print('Результат сохранен в файле request_result.json')
