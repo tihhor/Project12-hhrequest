@@ -10,7 +10,7 @@ request_text = input('Введите запрос для поиска вакан
 key_skills = {}
 vacancies_total = 0     #число найденных вакансий
 salary_total = 0        #суммарная зарплата вакансий - для расчета средней
-NUM_PAGES = 2           #ограничение числа страниц поиска
+NUM_PAGES = 20           #ограничение числа страниц поиска
 
 for page_number in range(NUM_PAGES):
 
