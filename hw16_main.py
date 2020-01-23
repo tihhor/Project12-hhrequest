@@ -1,4 +1,9 @@
 from flask import Flask, render_template, request
+import requests
+import pprint
+import time
+import json
+from hhrequest import hh_request
 
 app = Flask(__name__)
 
@@ -23,10 +28,19 @@ def request_get():
 
 @app.route('/request/', methods=['POST'])
 def request_post():
-    data = request.data
-    print(data)
+    data = request.form['what']
+    request_result = hh_request(data)
 
-    return render_template('request.html')
+    return render_template('results.html', data=request_result)
+
+
+@app.route('/results/')
+def results():
+    with open('request_result.json', "r", encoding="utf-8") as f:
+        data = json.load(f)
+    # print(data)
+    return render_template('results.html', data=data)
+
 
 
 @app.route('/contact/')
@@ -40,12 +54,6 @@ def contacts():
     return render_template('contact.html', name=developer_name, creation_date='16.01.2020')
 
 
-@app.route('/results/')
-def results():
-    data = ['python', 'js', 'java', 'sql', 'lua']
-    # data = []
-    return render_template('results.html', data=data)
-
 
 @app.route('/run/', methods=['GET'])
 def run_get():
@@ -54,16 +62,6 @@ def run_get():
     return render_template('form.html', text=text)
     # with open('main.txt', 'a') as f:
     #     f.write('hello')
-
-
-@app.route('/request/', methods=['POST'])
-def req_post():
-    # Как получть данные формы
-    data = request.data
-    print(data)
-    # with open('main.txt', 'a') as f:
-    #     f.write(f'{text}\n')
-    return render_template('request.html')
 
 
 if __name__ == "__main__":

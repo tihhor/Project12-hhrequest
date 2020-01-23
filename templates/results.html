@@ -28,7 +28,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand" href="index.html">Университет искусственного интелекта</a>
+      <a class="navbar-brand" href="/index/">Университет искусственного интелекта</a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu
         <i class="fas fa-bars"></i>
@@ -76,27 +76,38 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
 
-          <table class="table">
-            <tr>
-                <th>№</th>
-                <th>Название</th>
-                <th>Описание</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Python</td>
-                <td>Нейронные сети</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Java</td>
-                <td>Сайты</td>
-            <tr>
-                <td>3</td>
-                <td>Django</td>
-                <td>Сайты</td>
-            </tr>
-          </table>
+          {% if data %}
+            <ul>
+              Поисковый запрос:
+              {{data['request_text']}}
+            </ul>
+            <ul>
+              Количество вакансий:
+              {{data['vacancies_total']}}
+            </ul>
+            <ul>
+              Средняя зарплата:
+              {{data['average_salary']}}
+            </ul>
+
+            <table class="table">
+              <tr>
+                  <th>Востребованные навыки</th>
+                  <th>Количество</th>
+              </tr>
+              {% for item in data['key_skills'] %}
+                <tr>
+                    <td>{{item[0]}}</td>
+                    <td>{{item[1]}}</td>
+                </tr>
+
+              {% endfor %}
+
+            </table>
+
+          {% else %}
+              Данных нет
+          {% endif %}
 
         </div>
       </div>
