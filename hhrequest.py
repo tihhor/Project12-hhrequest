@@ -67,8 +67,8 @@ def hh_request(request_text):
     # print('ВСЕГО ВАКАНСИЙ:', vacancies_total)
     # print('СРЕДНЯЯ ЗАРПЛАТА:', request_result['average_salary'])
     # print('СПИСОК КЛЮЧЕВЫХ НАВЫКОВ:')
-    for item in key_skills_sorted:
-        print(f'{item[0]} {item[1]}  {round(item[1]/vacancies_total*100)} %' )
+    # for item in key_skills_sorted:
+    #     print(f'{item[0]} {item[1]}  {round(item[1]/vacancies_total*100)} %' )
 
 
     #сохраняем словарь результатов в файл .json
